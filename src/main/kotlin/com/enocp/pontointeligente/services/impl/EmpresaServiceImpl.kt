@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service
  class EmpresaServiceImpl(val empresaRepository: EmpresaRepository) : EmpresaService{
 
     override fun buscarPorCnpj(cnpj: String): Empresa? = empresaRepository.findByCnpj(cnpj)
-    
+
     override fun persistir(empresa: Empresa): Empresa = empresaRepository.save(empresa)
 
 
