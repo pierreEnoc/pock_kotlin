@@ -7,5 +7,5 @@ import org.springframework.boot.runApplication
 class PontointeligenteApplication
 
 fun main(args: Array<String>) {
-	runApplication<PontointeligenteApplication>(*args)
+  runApplication<PontointeligenteApplication>(*args)
 }

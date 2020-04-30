@@ -17,35 +17,54 @@ import org.springframework.test.context.junit4.SpringRunner
 
 @RunWith(SpringRunner::class)
 @SpringBootTest
-class FuncionaServiceTest {
-
-    @MockBean
-    private val funcinarioRepository: FuncionarioRepository? = null
-
-    @Autowired
-    private val funciarioService: FunciarioService? = null
-
-    private val email: String = "email@email.com"
-    private val cpf: String = "34234855948"
-    private val id: String = "1"
-
-    @Before
-    @Throws(Exception::class)
-    fun setUp() {
-        BDDMockito.given(funcinarioRepository?.save(Mockito.any(Funcionario::class.java)))
-                .willReturn(funcionario())
-        val willReturn: Any = BDDMockito.given(funcinarioRepository?.findOne(id)).willReturn(funcionario())
-        BDDMockito.given(funcinarioRepository?.findByEmail(email)).willReturn(funcionario())
-        BDDMockito.given(funcinarioRepository?.findByCpf(cpf)).willReturn(funcionario())
-
-    }
-    @Test
-    fun testPersistirFuncionario(){
-        val funcionario: Funcionario? = this.funciarioService?.persistir(funcionario())
-        Assert.assertNotNull(funcionario)
-    }
-
-    private fun funcionario(): Funcionario =
-            Funcionario("Nome", email, SenhaUtils().gerarBcrypt("123456"),
-                    cpf, PerfilEnum.ROLE_USUARIO, id)
+class FuncionarioServiceTest {
+  
+  @MockBean
+  private val funcinarioRepository: FuncionarioRepository? = null
+  
+  @Autowired
+  private val funciarioService: FunciarioService? = null
+  
+  private val email: String = "email@email.com"
+  private val cpf: String = "34234855948"
+  private val id: String = "1"
+  
+  @Before
+  @Throws(Exception::class)
+  fun setUp() {
+    val willReturn = BDDMockito.given(funcinarioRepository?.save(Mockito.any(Funcionario::class.java)))
+      .willReturn(funcionario())
+    BDDMockito.given(funcinarioRepository?.findOne(id)).willReturn(funcionario())
+    BDDMockito.given(funcinarioRepository?.findByEmail(email)).willReturn(funcionario())
+    BDDMockito.given(funcinarioRepository?.findByCpf(cpf)).willReturn(funcionario())
+    
+  }
+  
+  @Test
+  fun testPersistirFuncionario() {
+    val funcionario: Funcionario? = this.funciarioService?.persistir(funcionario())
+    Assert.assertNotNull(funcionario)
+  }
+  
+  @Test
+  fun testBuscarFuncionarioPorCpf() {
+    val funcionario: Funcionario? = this.funciarioService?.buscarPorCpf(cpf)
+    Assert.assertNotNull(funcionario)
+  }
+  
+  @Test
+  fun testBuscarFuncionarioPorEmail() {
+    val funcionario: Funcionario? = this.funciarioService?.buscarPorEMail(email)
+    Assert.assertNotNull(funcionario)
+  }
+  
+  @Test
+  fun testBuscarFuncionarioPorId() {
+    val funcionario: Funcionario? = this.funciarioService?.buscarPorId(id)
+  }
+  
+  
+  private fun funcionario(): Funcionario =
+    Funcionario("Nome", email, SenhaUtils().gerarBcrypt("123456"),
+      cpf, PerfilEnum.ROLE_USUARIO, id)
 }
